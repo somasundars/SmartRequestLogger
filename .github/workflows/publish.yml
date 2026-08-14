@@ -1,0 +1,70 @@
+name: Build, Test & Publish
+
+on:
+  push:
+    branches: [main, develop, "release/*"]
+  pull_request:
+    branches: [main, develop, "release/*"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Nerdbank.GitVersioning needs full history to compute git height
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - name: Restore
+        run: |
+          dotnet tool restore
+          dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test --no-build --configuration Release --verbosity normal
+
+      - name: Show computed version
+        run: dotnet nbgv get-version
+
+  # Runs only on a push (i.e. after a PR merges) to main, develop, or release/*.
+  # The version comes entirely from version.json + git height on that branch —
+  # no manual `git tag` or `dotnet pack -p:Version=` step required.
+  publish:
+    needs: build-and-test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # nbgv tag pushes the computed version back as a git tag
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Pack
+        run: dotnet pack src/SmartRequestLogger/SmartRequestLogger.csproj --configuration Release --output ./nupkg
+
+      - name: Tag this commit with the computed version
+        run: dotnet nbgv tag
+
+      - name: Push tag
+        run: git push origin --tags
+
+      - name: Push to NuGet
+        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate

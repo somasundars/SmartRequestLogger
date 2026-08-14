@@ -1,7 +1,7 @@
 # SmartRequestLogger
 
 ![NuGet](https://img.shields.io/nuget/v/SmartRequestLogger)
-![Build](https://github.com/yourusername/SmartRequestLogger/actions/workflows/publish.yml/badge.svg)
+![Build](https://github.com/somasundars/SmartRequestLogger/actions/workflows/publish.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Lightweight ASP.NET Core middleware for structured request/response logging — correlation IDs,

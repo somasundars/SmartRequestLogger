@@ -1,9 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- NuGet package metadata -->
+    <!-- Version is NOT set here — Nerdbank.GitVersioning computes it from version.json + git height. -->
+    <PackageId>SmartRequestLogger</PackageId>
+    <Authors>Somasundar S</Authors>
+    <Description>Lightweight ASP.NET Core middleware for structured request/response logging with correlation IDs, timing, and configurable redaction — no extra dependencies beyond Microsoft.Extensions.Logging.</Description>
+    <PackageTags>aspnetcore;middleware;logging;correlation-id;observability</PackageTags>
+    <RepositoryUrl>https://github.com/somasundars/SmartRequestLogger</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.6.146" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>

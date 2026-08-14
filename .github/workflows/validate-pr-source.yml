@@ -1,0 +1,21 @@
+name: Validate PR source for main
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+jobs:
+  validate:
+    name: validate-pr-source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate source branch when targeting main
+        if: ${{ github.event.pull_request.base.ref == 'main' }}
+        run: |
+          set -euo pipefail
+          head="${{ github.head_ref }}"
+          echo "PR base: ${{ github.event.pull_request.base.ref }}, head: $head"
+          if [[ ! "$head" =~ ^(release/|develop/) ]]; then
+            echo "Error: PR to 'main' must come from 'release/*' or 'develop/*' branches. Got: $head"
+            exit 1
+          fi

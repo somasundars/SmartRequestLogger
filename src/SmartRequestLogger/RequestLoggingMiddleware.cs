@@ -16,6 +16,12 @@ public sealed class RequestLoggingMiddleware
     private readonly ILogger<RequestLoggingMiddleware> _logger;
     private readonly RequestLoggingOptions _options;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RequestLoggingMiddleware"/> class.
+    /// </summary>
+    /// <param name="next">The next middleware <see cref="RequestDelegate"/> in the pipeline.</param>
+    /// <param name="logger">Logger used for structured request/response logging.</param>
+    /// <param name="options">Options for request logging.</param>
     public RequestLoggingMiddleware(
         RequestDelegate next,
         ILogger<RequestLoggingMiddleware> logger,
@@ -26,6 +32,11 @@ public sealed class RequestLoggingMiddleware
         _options = options.Value;
     }
 
+    /// <summary>
+    /// Invokes the middleware for the given <see cref="HttpContext"/>, logging the
+    /// request and response (including optional bodies) and propagating a correlation ID.
+    /// </summary>
+    /// <param name="context">The current HTTP context.</param>
     public async Task InvokeAsync(HttpContext context)
     {
         if (ShouldSkip(context.Request.Path))

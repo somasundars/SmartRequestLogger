@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SmartRequestLogger;
 
+/// <summary>
+/// Extension methods for registering request logging services into an <see cref="IServiceCollection"/>.
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
@@ -20,6 +23,9 @@ public static class ServiceCollectionExtensions
     }
 }
 
+/// <summary>
+/// Extension methods for adding the <see cref="RequestLoggingMiddleware"/> into an <see cref="IApplicationBuilder"/> pipeline.
+/// </summary>
 public static class ApplicationBuilderExtensions
 {
     /// <summary>

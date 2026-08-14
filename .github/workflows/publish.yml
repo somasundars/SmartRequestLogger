@@ -43,7 +43,8 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # nbgv tag pushes the computed version back as a git tag
+      id-token: write
+      contents: read  # allow OIDC token exchange; read-only repo contents for actions
     steps:
       - uses: actions/checkout@v4
         with:

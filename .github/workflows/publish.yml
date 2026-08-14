@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read  # allow OIDC token exchange; read-only repo contents for actions
+      contents: write  # allow OIDC token exchange; read-only repo contents for actions
     steps:
       - uses: actions/checkout@v4
         with:
